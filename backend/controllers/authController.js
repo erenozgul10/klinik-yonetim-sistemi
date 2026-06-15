@@ -5,14 +5,22 @@ const jwt = require('jsonwebtoken');
 // KULLANICI KAYIT OLMA (REGISTER)
 exports.register = async (req, res) => {
   try {
-    const { isim, email, sifre, rol } = req.body;
+    // 1. DOKUNUŞ: React'ten gelen verilerin arasından 'bolum' bilgisini de alıyoruz
+    const { isim, email, sifre, rol, bolum } = req.body;
     
     // Email daha önce kullanılmış mı kontrol et
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ mesaj: 'Bu email zaten kullanımda.' });
 
-    // Yeni kullanıcı oluştur (Şifre modelde otomatik hash'lenecek)
-    const user = await User.create({ isim, email, sifre, rol });
+    // 2. DOKUNUŞ: Yeni kullanıcı oluştururken bölüm bilgisini veritabanına işliyoruz
+    // Şifre modelde otomatik hash'lenecek
+    const user = await User.create({ 
+      isim, 
+      email, 
+      sifre, 
+      rol,
+      bolum: rol === 'Doktor' ? bolum : '' // Sadece doktorsa bölümü kaydet, hastaysa boş geç
+    });
 
     res.status(201).json({ mesaj: 'Kullanıcı başarıyla oluşturuldu', user });
   } catch (error) {

@@ -17,9 +17,16 @@ app.get('/', (req, res) => {
   res.send('Klinik Yönetim Sistemi Backend API Basariyla Calisiyor!');
 });
 
-// --- YENİ EKLENEN ROTALAR (Kayıt ve Giriş İçin) ---
+// --- EKLENEN ROTALAR ---
+
+// 1. Kayıt ve Giriş İşlemleri
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
+
+// 2. Randevu İşlemleri (Bunu yeni ekledik!)
+const appointmentRoutes = require('./routes/appointmentRoutes');
+app.use('/api/appointments', appointmentRoutes);
+
 // --------------------------------------------------
 
 // Veritabanı (MongoDB) Bağlantısı

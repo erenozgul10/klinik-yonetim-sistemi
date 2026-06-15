@@ -16,9 +16,13 @@ const userSchema = new mongoose.Schema({
     required: true 
   },
   rol: { 
-    type: String, 
+    type: String,
     enum: ['Admin', 'Doktor', 'Hasta'], 
     default: 'Hasta' 
+  },
+  bolum: { 
+    type: String,
+    default: '' // Hastalar veya Adminler için boş kalacak
   }
 }, { timestamps: true });
 

@@ -15,13 +15,13 @@ const appointmentSchema = new mongoose.Schema({
     type: Date, 
     required: true 
   },
+  notlar: { 
+    type: String 
+  },
   durum: { 
     type: String, 
     enum: ['Bekliyor', 'Onaylandı', 'İptal'], 
     default: 'Bekliyor' 
-  },
-  notlar: { 
-    type: String 
   }
 }, { timestamps: true });
 
