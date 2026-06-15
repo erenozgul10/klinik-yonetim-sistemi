@@ -17,8 +17,12 @@ app.get('/', (req, res) => {
   res.send('Klinik Yönetim Sistemi Backend API Basariyla Calisiyor!');
 });
 
+// --- YENİ EKLENEN ROTALAR (Kayıt ve Giriş İçin) ---
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
+// --------------------------------------------------
+
 // Veritabanı (MongoDB) Bağlantısı
-// Not: Şimdilik hata vermemesi için try-catch bloğu ekledik.
 const baglan = async () => {
     try {
         // Geçici olarak strictQuery uyarısını kapatıyoruz
