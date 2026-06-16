@@ -16,12 +16,20 @@ const Navbar = () => {
       <div className="container">
         <Link className="navbar-brand fw-bold" to="/">🏥 KlinikSistem</Link>
         <div className="collapse navbar-collapse">
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav ms-auto align-items-center">
             {token ? (
               <>
-                <li className="nav-item d-flex align-items-center">
-                  <span className="badge bg-secondary me-3 fs-6">Rol: {rol}</span>
+                {/* 1. Rol Gösterimi */}
+                <li className="nav-item me-3">
+                  <span className="badge bg-secondary fs-6">Rol: {rol}</span>
                 </li>
+                
+                {/* 2. YENİ EKLENEN: Profilim Butonu */}
+                <li className="nav-item me-4">
+                  <Link className="nav-link text-white fw-bold p-0" to="/profil">👤 Profilim</Link>
+                </li>
+                
+                {/* 3. Çıkış Yap Butonu */}
                 <li className="nav-item">
                   <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">Çıkış Yap</button>
                 </li>

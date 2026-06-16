@@ -49,3 +49,31 @@ exports.getMyAppointments = async (req, res) => {
     res.status(500).json({ mesaj: 'Randevular getirilemedi.', hata: error.message });
   }
 };
+
+// DURUM GÜNCELLEME (ONAYLA VEYA İPTAL ET) - DEDEKTİF KODLARI EKLENDİ
+exports.updateStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { durum } = req.body;
+
+    console.log("🛠️ DEDEKTİF - Gelen Randevu ID:", id);
+    console.log("🛠️ DEDEKTİF - İstenen Yeni Durum:", durum);
+
+    const guncelRandevu = await Appointment.findByIdAndUpdate(
+      id,
+      { durum },
+      { new: true } // Güncellenmiş halini geri döndür
+    );
+
+    if (!guncelRandevu) {
+        console.log("⚠️ HATA: Veritabanında bu ID'ye ait randevu bulunamadı!");
+        return res.status(404).json({ mesaj: 'Randevu bulunamadı' });
+    }
+
+    console.log("✅ BAŞARILI: Randevu güncellendi!");
+    res.status(200).json({ mesaj: `Randevu ${durum} olarak güncellendi!`, randevu: guncelRandevu });
+  } catch (error) {
+    console.log("🚨 KRİTİK HATA DETAYI:", error.message);
+    res.status(500).json({ mesaj: 'Durum güncellenemedi', hata: error.message });
+  }
+};

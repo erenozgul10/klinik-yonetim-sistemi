@@ -3,7 +3,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import AdminPanel from './pages/AdminPanel';
+import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 // Güvenlik Katmanı
 const PrivateRoute = ({ children }) => {
@@ -21,14 +23,21 @@ const HomeRouter = () => {
 function App() {
   return (
     <Router>
-      {/* Menü Her Sayfada Sabit */}
-      <Navbar />
-      
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/" element={<PrivateRoute><HomeRouter /></PrivateRoute>} />
-      </Routes>
+      <div className="d-flex flex-column min-vh-100">
+        <Navbar />
+        
+        {/* Ana İçerik Alanı */}
+        <main className="flex-grow-1">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profil" element={<PrivateRoute><Profile /></PrivateRoute>} />
+            <Route path="/" element={<PrivateRoute><HomeRouter /></PrivateRoute>} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
     </Router>
   );
 }
