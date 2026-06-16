@@ -1,36 +1,64 @@
 import React from 'react';
 
 const AppointmentTable = ({ randevular, rol }) => {
+  
+  // Duruma göre renkli Bootstrap rozeti (Badge) döndüren fonksiyon
+  const getDurumRozeti = (durum) => {
+    switch (durum) {
+      case 'Bekliyor': 
+        return <span className="badge bg-warning text-dark px-3 py-2">⏳ Bekliyor</span>;
+      case 'Onaylandı': 
+        return <span className="badge bg-success px-3 py-2">✅ Onaylandı</span>;
+      case 'İptal': 
+        return <span className="badge bg-danger px-3 py-2">❌ İptal Edildi</span>;
+      default: 
+        return <span className="badge bg-secondary">{durum}</span>;
+    }
+  };
+
   return (
     <div className="table-responsive">
-      <table className="table table-hover align-middle">
+      <table className="table table-hover table-striped text-center align-middle mb-0">
         <thead className="table-light">
           <tr>
             <th>Tarih & Saat</th>
-            <th>{rol === 'Doktor' ? 'Hasta Adı' : 'Doktor Adı'}</th>
-            <th>Durum</th>
+            {rol === 'Hasta' ? <th>Doktor Adı</th> : <th>Hasta Adı</th>}
+            {rol === 'Hasta' && <th>Bölüm</th>}
             <th>Notlar</th>
+            <th>Durum</th>
           </tr>
         </thead>
         <tbody>
           {randevular.length > 0 ? (
-            randevular.map((randevu) => (
-              <tr key={randevu._id}>
-                <td>{new Date(randevu.tarih).toLocaleString('tr-TR')}</td>
-                <td className="fw-semibold">
-                  {rol === 'Doktor' ? randevu.hasta?.isim : randevu.doktor?.isim || 'Bilinmiyor'}
+            randevular.map((randevu, index) => (
+              <tr key={index}>
+                <td className="fw-bold text-secondary">
+                  {new Date(randevu.tarih).toLocaleString('tr-TR')}
                 </td>
-                <td>
-                  <span className={`badge ${randevu.durum === 'Bekliyor' ? 'bg-warning text-dark' : 'bg-success'}`}>
-                    {randevu.durum}
-                  </span>
+                
+                {/* Hastaysa doktoru göster, doktorsa hastayı göster */}
+                {rol === 'Hasta' ? (
+                  <>
+                    <td>Dr. {randevu.doktor?.isim || 'Bilinmiyor'}</td>
+                    <td>{randevu.doktor?.bolum || '-'}</td>
+                  </>
+                ) : (
+                  <td className="fw-bold">{randevu.hasta?.isim || 'Bilinmiyor'}</td>
+                )}
+
+                <td className="text-muted fst-italic">
+                  {randevu.notlar ? randevu.notlar : '-'}
                 </td>
-                <td className="text-muted">{randevu.notlar || '-'}</td>
+                
+                {/* Rozetli Durum Gösterimi */}
+                <td>{getDurumRozeti(randevu.durum)}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="text-center py-4 text-muted">Kayıtlı randevu bulunamadı.</td>
+              <td colSpan="5" className="text-muted py-4">
+                Henüz kayıtlı randevu bulunmamaktadır.
+              </td>
             </tr>
           )}
         </tbody>
